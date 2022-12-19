@@ -2,7 +2,6 @@ lockfileVersion: 5.4
 
 specifiers:
   '@rbxts/compiler-types': 2.0.4-types.1
-  '@rbxts/llama': 1.1.1-ts.1
   '@rbxts/log': ^0.6.3
   '@rbxts/message-templates': ^0.3.2
   '@rbxts/object-utils': ^1.0.4
@@ -22,7 +21,6 @@ specifiers:
   typescript: ^4.9.4
 
 dependencies:
-  '@rbxts/llama': 1.1.1-ts.1
   '@rbxts/log': 0.6.3
   '@rbxts/message-templates': 0.3.2
   '@rbxts/object-utils': 1.0.4
@@ -107,10 +105,6 @@ packages:
   /@rbxts/compiler-types/2.0.4-types.1:
     resolution: {integrity: sha512-sLFiyMH9j8kcCd07lt6R+WgneksCGqYUFKu7qX02ufUU7r9eR2dXoOt2A9Nxh3unTuCu5mYyO0M6JYb82fOHxA==}
     dev: true
-
-  /@rbxts/llama/1.1.1-ts.1:
-    resolution: {integrity: sha512-k4fGHYwuGfCrK6uoD5MzpN+DlxbO7hWYPn0Qzi5wH8+jue0DAVxpJ9q89ZLobgLzrAa/EAqufZ9VYoJvd/qx1g==}
-    dev: false
 
   /@rbxts/log/0.6.3:
     resolution: {integrity: sha512-YZpDvjL7yif9aYuNAkuM9vnegcwQmOwX0CfvGfWvrzCpmARY4Ey2pTMhoEgxKo36HcdPPi3aLxmcuvn0NHrPPg==}

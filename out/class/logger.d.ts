@@ -10,14 +10,6 @@ export declare const logHeaders: {
     0: string;
 };
 export declare const logHeaderWidth: number;
-export declare const logHeadersPadStart: {
-    1: string;
-    2: string;
-    3: string;
-    4: string;
-    5: string;
-    0: string;
-};
 interface SinkOptions {
     label?: {
         italic?: boolean;

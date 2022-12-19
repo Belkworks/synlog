@@ -28,7 +28,6 @@
     "typescript": "^4.9.4"
   },
   "dependencies": {
-    "@rbxts/llama": "1.1.1-ts.1",
     "@rbxts/log": "^0.6.3",
     "@rbxts/message-templates": "^0.3.2",
     "@rbxts/object-utils": "^1.0.4",

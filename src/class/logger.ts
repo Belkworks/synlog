@@ -1,4 +1,3 @@
-import { Dictionary } from "@rbxts/llama";
 import { LogLevel } from "@rbxts/log";
 import { LogEvent } from "@rbxts/log/out/Core";
 import { MessageTemplateParser, TemplateTokenKind } from "@rbxts/message-templates";
@@ -20,7 +19,9 @@ export const logHeaders = {
 const padStart = (str: string, len: number, pad = " "): string => pad.rep(len - str.size()) + str;
 
 export const logHeaderWidth = Object.values(logHeaders).reduce((acc, cur) => math.max(acc, cur.size()), 0);
-export const logHeadersPadStart = Dictionary.map(logHeaders, (value) => padStart(value, logHeaderWidth));
+
+const paddedLogHeaders = {} as Record<LogLevel, string>;
+Object.keys(logHeaders).forEach((key) => (paddedLogHeaders[key] = padStart(logHeaders[key], logHeaderWidth)));
 
 const Camera = Workspace.CurrentCamera as Camera;
 
@@ -114,7 +115,7 @@ export class DrawingLogger {
 			if (prefix !== undefined) tokens.unshift(Text.color(`[${prefix}] `, Colors.Grey));
 
 			tokens.unshift({
-				text: logHeadersPadStart[log.Level] + " ",
+				text: paddedLogHeaders[log.Level] + " ",
 				color: labelColor ? logColors[log.Level] : white,
 				font: labelFont,
 			});

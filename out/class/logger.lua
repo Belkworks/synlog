@@ -1,6 +1,5 @@
 -- Compiled with roblox-ts v2.0.4
 local TS = _G[script]
-local Dictionary = TS.import(script, TS.getModule(script, "@rbxts", "llama").out).Dictionary
 local LogLevel = TS.import(script, TS.getModule(script, "@rbxts", "log").out).LogLevel
 local _message_templates = TS.import(script, TS.getModule(script, "@rbxts", "message-templates").out)
 local MessageTemplateParser = _message_templates.MessageTemplateParser
@@ -42,9 +41,15 @@ for _i = 1, #_exp do
 end
 -- ▲ ReadonlyArray.reduce ▲
 local logHeaderWidth = _result
-local logHeadersPadStart = Dictionary.map(logHeaders, function(value)
-	return padStart(value, logHeaderWidth)
-end)
+local paddedLogHeaders = {}
+local _exp_1 = Object.keys(logHeaders)
+local _arg0_1 = function(key)
+	paddedLogHeaders[key] = padStart(logHeaders[key], logHeaderWidth)
+	return paddedLogHeaders[key]
+end
+for _k, _v in _exp_1 do
+	_arg0_1(_v, _k - 1, _exp_1)
+end
 local Camera = Workspace.CurrentCamera
 local DEFAULT_LOG_TIME = 7
 local logColors = {
@@ -90,13 +95,13 @@ do
 	function DrawingLogger:addLine(line)
 		local id = HttpService:GenerateGUID(false)
 		local _queue = self.queue
-		local _arg0_1 = {
+		local _arg0_2 = {
 			id = id,
 			line = line,
 			entered = tick(),
 			visible = false,
 		}
-		table.insert(_queue, _arg0_1)
+		table.insert(_queue, _arg0_2)
 		self:update()
 		return id
 	end
@@ -135,42 +140,42 @@ do
 		local labelColor = _condition_2
 		local white = Colors.White
 		return function(log)
-			local _exp_1 = MessageTemplateParser.GetTokens(log.Template)
-			local _arg0_1 = function(token)
+			local _exp_2 = MessageTemplateParser.GetTokens(log.Template)
+			local _arg0_2 = function(token)
 				if token.kind == TemplateTokenKind.Text then
 					return Text.white(token.text)
 				end
 				local prop = log[token.propertyName]
 				local str = tostring(prop)
-				local _exp_2 = typeof(prop)
+				local _exp_3 = typeof(prop)
 				repeat
-					if _exp_2 == "number" then
+					if _exp_3 == "number" then
 						return Text.color(str, Colors.Mint)
 					end
-					if _exp_2 == "string" then
+					if _exp_3 == "string" then
 						return Text.white(str)
 					end
 					return Text.color(str, Colors.Grey)
 				until true
 			end
 			-- ▼ ReadonlyArray.map ▼
-			local _newValue = table.create(#_exp_1)
-			for _k, _v in _exp_1 do
-				_newValue[_k] = _arg0_1(_v, _k - 1, _exp_1)
+			local _newValue = table.create(#_exp_2)
+			for _k, _v in _exp_2 do
+				_newValue[_k] = _arg0_2(_v, _k - 1, _exp_2)
 			end
 			-- ▲ ReadonlyArray.map ▲
 			local tokens = _newValue
 			local prefix = log.SourceContext
 			if prefix ~= nil then
-				local _arg0_2 = Text.color("[" .. (prefix .. "] "), Colors.Grey)
-				table.insert(tokens, 1, _arg0_2)
+				local _arg0_3 = Text.color("[" .. (prefix .. "] "), Colors.Grey)
+				table.insert(tokens, 1, _arg0_3)
 			end
-			local _arg0_2 = {
-				text = logHeadersPadStart[log.Level] .. " ",
+			local _arg0_3 = {
+				text = paddedLogHeaders[log.Level] .. " ",
 				color = if labelColor then logColors[log.Level] else white,
 				font = labelFont,
 			}
-			table.insert(tokens, 1, _arg0_2)
+			table.insert(tokens, 1, _arg0_3)
 			self:addLine(Line:fromTokens(tokens))
 		end
 	end
@@ -191,13 +196,13 @@ do
 	end
 	function DrawingLogger:removeById(id)
 		local _lines = self.lines
-		local _arg0_1 = function(entry)
+		local _arg0_2 = function(entry)
 			return entry.id == id
 		end
 		-- ▼ ReadonlyArray.findIndex ▼
 		local _result_1 = -1
 		for _i, _v in _lines do
-			if _arg0_1(_v, _i - 1, _lines) == true then
+			if _arg0_2(_v, _i - 1, _lines) == true then
 				_result_1 = _i - 1
 				break
 			end
@@ -213,13 +218,13 @@ do
 	end
 	function DrawingLogger:dismiss(id)
 		local _queue = self.queue
-		local _arg0_1 = function(entry)
+		local _arg0_2 = function(entry)
 			return entry.id == id
 		end
 		-- ▼ ReadonlyArray.findIndex ▼
 		local _result_1 = -1
 		for _i, _v in _queue do
-			if _arg0_1(_v, _i - 1, _queue) == true then
+			if _arg0_2(_v, _i - 1, _queue) == true then
 				_result_1 = _i - 1
 				break
 			end
@@ -238,11 +243,11 @@ do
 	end
 	function DrawingLogger:clear()
 		local _lines = self.lines
-		local _arg0_1 = function(entry)
+		local _arg0_2 = function(entry)
 			return self:destroyEntry(entry)
 		end
 		for _k, _v in _lines do
-			_arg0_1(_v, _k - 1, _lines)
+			_arg0_2(_v, _k - 1, _lines)
 		end
 		table.clear(self.lines)
 		table.clear(self.queue)
@@ -325,11 +330,11 @@ do
 			return ""
 		end
 		local _lines = self.lines
-		local _arg0_1 = function(entry)
+		local _arg0_2 = function(entry)
 			return entry.line:destroy()
 		end
 		for _k, _v in _lines do
-			_arg0_1(_v, _k - 1, _lines)
+			_arg0_2(_v, _k - 1, _lines)
 		end
 		table.clear(self.lines)
 		table.clear(self.queue)
@@ -338,6 +343,5 @@ end
 return {
 	logHeaders = logHeaders,
 	logHeaderWidth = logHeaderWidth,
-	logHeadersPadStart = logHeadersPadStart,
 	DrawingLogger = DrawingLogger,
 }
