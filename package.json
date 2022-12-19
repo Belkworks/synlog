@@ -1,5 +1,5 @@
 {
-  "name": "@synts/synlog",
+  "name": "@rbxts/synlog",
   "main": "out/init.lua",
   "types": "out/index.d.ts",
   "scripts": {
