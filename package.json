@@ -1,5 +1,6 @@
 {
   "name": "@rbxts/synlog",
+  "version": "3.0.0",
   "main": "out/init.lua",
   "types": "out/index.d.ts",
   "scripts": {
