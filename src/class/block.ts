@@ -1,5 +1,5 @@
-import { Colors, Fonts } from "helper";
-import { Token } from "types";
+import { Colors, Fonts } from "../helper";
+import { Token } from "../types";
 
 // A block of drawn text
 export class TextBlock {
@@ -11,7 +11,7 @@ export class TextBlock {
 
 	private createObject() {
 		let obj = this.object;
-		if (!obj) {
+		if (obj === undefined) {
 			obj = new TextDynamic();
 			this.object = obj;
 		}
@@ -20,13 +20,11 @@ export class TextBlock {
 
 	create() {
 		const text = this.createObject();
-
 		text.XAlignment = XAlignment.Right;
 		text.YAlignment = YAlignment.Bottom;
 		text.Size = 21;
 		text.Outlined = true;
 		text.OutlineColor = Colors.Black;
-		// text.OutlineOpacity = 3 / 4;
 		text.Visible = true;
 
 		this.update();
