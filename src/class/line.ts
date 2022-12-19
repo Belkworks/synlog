@@ -1,4 +1,4 @@
-import { Token } from "../types";
+import { Token } from "types";
 import { TextBlock } from "./block";
 
 // A horizontal list of TextBlocks

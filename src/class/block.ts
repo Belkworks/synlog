@@ -1,5 +1,5 @@
-import { Colors, Fonts } from "synlog/helper";
-import { Token } from "synlog/types";
+import { Colors, Fonts } from "helper";
+import { Token } from "types";
 
 // A block of drawn text
 export class TextBlock {
