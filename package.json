@@ -36,5 +36,9 @@
     "@rbxts/message-templates": "^0.3.2",
     "@rbxts/object-utils": "^1.0.4",
     "@rbxts/services": "^1.5.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Belkworks/synlog.git"
   }
 }
