@@ -11,6 +11,9 @@
     "out",
     "!**/*.tsbuildinfo"
   ],
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "devDependencies": {
     "@rbxts/compiler-types": "2.0.4-types.1",
     "@rbxts/synapse-types": "github:belkworks/rbxts-synapse-types",
