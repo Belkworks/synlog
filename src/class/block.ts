@@ -35,7 +35,7 @@ export class TextBlock {
 		if (!object) return;
 
 		const token = this.token;
-		object.Font = token.font ?? Fonts.Regular;
+		object.Font = token.font ?? (token.italics ? Fonts.Italic : Fonts.Regular);
 		object.Color = token.color;
 		object.Text = token.text;
 
