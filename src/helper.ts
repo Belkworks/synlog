@@ -1,3 +1,5 @@
+import { Token } from "types";
+
 export const Colors = {
 	Red: new Color3(1, 0, 0),
 	Green: new Color3(0, 1, 0),
@@ -23,8 +25,8 @@ export const Colors = {
 };
 
 export const Text = {
-	color: (text: string, color: Color3) => ({ text, color }),
-	white: (text: string) => ({ text, color: Colors.White }),
+	color: (text: string, color: Color3): Token => ({ text, color }),
+	white: (text: string): Token => ({ text, color: Colors.White }),
 };
 
 export const Fonts = {
