@@ -16,7 +16,7 @@ export class Line {
 	}
 
 	static fromToken(token: Token) {
-		return Line.fromTokens([token]);
+		return new Line([new TextBlock(token)]);
 	}
 
 	create() {
