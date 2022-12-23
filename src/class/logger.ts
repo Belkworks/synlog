@@ -1,40 +1,9 @@
-import { LogLevel } from "@rbxts/log";
-import { LogEvent } from "@rbxts/log/out/Core";
-import { MessageTemplateParser, TemplateTokenKind } from "@rbxts/message-templates";
-import Object from "@rbxts/object-utils";
-import { HttpService, Workspace } from "@rbxts/services";
-import { Colors, Fonts, Text } from "../helper";
-import { Token } from "../types";
 import { Line } from "./line";
 
-export const logHeaders = {
-	[LogLevel.Debugging]: "DEBUG",
-	[LogLevel.Information]: "INFO",
-	[LogLevel.Warning]: "WARN",
-	[LogLevel.Error]: "ERROR",
-	[LogLevel.Fatal]: "FATAL",
-	[LogLevel.Verbose]: "LOG",
-};
-
-const padStart = (str: string, len: number, pad = " "): string => pad.rep(len - str.size()) + str;
-
-export const logHeaderWidth = Object.values(logHeaders).reduce((acc, cur) => math.max(acc, cur.size()), 0);
-
-const paddedLogHeaders = {} as Record<LogLevel, string>;
-Object.keys(logHeaders).forEach((key) => (paddedLogHeaders[key] = padStart(logHeaders[key], logHeaderWidth)));
-
+const Workspace = game.GetService("Workspace");
 const Camera = Workspace.CurrentCamera as Camera;
 
 const DEFAULT_LOG_TIME = 7;
-
-const logColors = {
-	[LogLevel.Debugging]: Colors.GreyGrey,
-	[LogLevel.Information]: Colors.InfoBlue,
-	[LogLevel.Warning]: Colors.Orange,
-	[LogLevel.Error]: Colors.LightRed,
-	[LogLevel.Fatal]: Colors.LightPurple,
-	[LogLevel.Verbose]: Colors.White,
-};
 
 type LineEntry = {
 	id: string;
@@ -42,14 +11,6 @@ type LineEntry = {
 	visible: boolean;
 	entered?: number;
 };
-
-interface SinkOptions {
-	label?: {
-		italic?: boolean;
-		font?: Font;
-		color?: boolean;
-	};
-}
 
 type Direction = "up" | "down";
 type MaxBehavior = "drop" | "wait";
@@ -74,8 +35,14 @@ export class DrawingLogger {
 		return this;
 	}
 
+	private counter = 0;
+
+	getId() {
+		return `line_${this.counter++}`;
+	}
+
 	addLine(line: Line) {
-		const id = HttpService.GenerateGUID(false);
+		const id = this.getId();
 
 		this.queue.push({
 			id,
@@ -86,42 +53,6 @@ export class DrawingLogger {
 
 		this.update();
 		return id;
-	}
-
-	sink(opts?: SinkOptions) {
-		const labelOpts = opts?.label;
-		const labelItalic = labelOpts?.italic ?? true;
-		const labelFont = labelOpts?.font ?? (labelItalic ? Fonts.Italic : Fonts.Regular);
-		const labelColor = labelOpts?.color ?? true;
-		const white = Colors.White;
-
-		return (log: LogEvent) => {
-			const tokens = MessageTemplateParser.GetTokens(log.Template).map((token): Token => {
-				if (token.kind === TemplateTokenKind.Text) return Text.white(token.text);
-
-				const prop = log[token.propertyName];
-				const str = tostring(prop);
-				switch (typeOf(prop)) {
-					case "number":
-						return Text.color(str, Colors.Mint);
-					case "string":
-						return Text.white(str);
-					default:
-						return Text.color(str, Colors.Grey);
-				}
-			});
-
-			const prefix = log.SourceContext;
-			if (prefix !== undefined) tokens.unshift(Text.color(`[${prefix}] `, Colors.Grey));
-
-			tokens.unshift({
-				text: paddedLogHeaders[log.Level] + " ",
-				color: labelColor ? logColors[log.Level] : white,
-				font: labelFont,
-			});
-
-			this.addLine(Line.fromTokens(tokens));
-		};
 	}
 
 	private destroyEntry(entry: LineEntry) {

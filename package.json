@@ -32,12 +32,6 @@
     "tape-lua": "3.1.1-a",
     "typescript": "^4.9.4"
   },
-  "dependencies": {
-    "@rbxts/log": "^0.6.3",
-    "@rbxts/message-templates": "^0.3.2",
-    "@rbxts/object-utils": "^1.0.4",
-    "@rbxts/services": "^1.5.1"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/Belkworks/synlog.git"
