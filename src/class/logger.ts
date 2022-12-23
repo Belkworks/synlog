@@ -1,15 +1,16 @@
+import { colorify, mergeTokens } from "../helper";
+import { Token } from "../types";
 import { Line } from "./line";
 
 const Workspace = game.GetService("Workspace");
 const Camera = Workspace.CurrentCamera as Camera;
 
-const DEFAULT_LOG_TIME = 7;
-
 type LineEntry = {
 	id: string;
 	line: Line;
 	visible: boolean;
-	entered?: number;
+	enteredAt: DateTime;
+	shownAt?: DateTime;
 };
 
 type Direction = "up" | "down";
@@ -23,6 +24,7 @@ export class DrawingLogger {
 
 	direction: Direction = "up";
 	maxLines = 10;
+	logTime = 10;
 
 	setMaxBehavior(behavior: MaxBehavior) {
 		this.behavior = behavior;
@@ -41,18 +43,38 @@ export class DrawingLogger {
 		return `line_${this.counter++}`;
 	}
 
+	// TODO: display options
 	addLine(line: Line) {
 		const id = this.getId();
 
 		this.queue.push({
 			id,
 			line,
-			entered: tick(),
+			enteredAt: DateTime.now(),
 			visible: false,
 		});
 
 		this.update();
 		return id;
+	}
+
+	printTokens(tokens: Token[]) {
+		return this.addLine(Line.fromTokens(tokens));
+	}
+
+	print(...tokens: unknown[]) {
+		// TODO: allow printing nil?
+		return this.printTokens(
+			mergeTokens(
+				tokens
+					.filterUndefined()
+					.map(colorify)
+					.map((t) => ({
+						...t,
+						text: t.text + " ",
+					})),
+			),
+		);
 	}
 
 	private destroyEntry(entry: LineEntry) {
@@ -63,9 +85,9 @@ export class DrawingLogger {
 
 	private enter(entry: LineEntry) {
 		entry.visible = true;
-		entry.entered = tick();
+		entry.shownAt = DateTime.now();
 		entry.line.create();
-		task.delay(DEFAULT_LOG_TIME, () => this.dismiss(entry.id));
+		task.delay(this.logTime, () => this.dismiss(entry.id));
 	}
 
 	private removeById(id: string) {
@@ -147,8 +169,6 @@ export class DrawingLogger {
 
 	Destroy() {
 		this.addLine = () => "";
-		this.lines.forEach((entry) => entry.line.destroy());
-		this.lines.clear();
-		this.queue.clear();
+		this.clear();
 	}
 }
