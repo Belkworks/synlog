@@ -70,12 +70,9 @@ export class DrawingLogger {
 
 	private removeById(id: string) {
 		const i = this.lines.findIndex((entry) => entry.id === id);
-		if (i >= 0) {
-			this.destroyEntry(this.lines[i]);
-			this.lines.remove(i);
-			return true;
-		}
-		return false;
+		if (i < 0) return false;
+		this.destroyEntry(this.lines.remove(i) as LineEntry);
+		return true;
 	}
 
 	dismiss(id: string) {
