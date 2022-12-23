@@ -1,4 +1,4 @@
-import { Token } from "types";
+import { Token } from "./types";
 
 export const Colors = {
 	Red: new Color3(1, 0, 0),
@@ -32,4 +32,61 @@ export const Text = {
 export const Fonts = {
 	Regular: DrawFont.RegisterDefault("SometypeMono_Regular", {}),
 	Italic: DrawFont.RegisterDefault("SometypeMono_Italic", {}),
+};
+
+export const colorify = (val: unknown): Token => {
+	const str = tostring(val);
+	switch (typeOf(val)) {
+		case "number":
+			return Text.color(str, Colors.Mint);
+
+		case "string":
+			// TODO: check if string is wrapped in quotes
+			return Text.white(str);
+
+		case "boolean":
+			return Text.color(str, (val as boolean) ? Colors.LightGreen : Colors.LightRed);
+
+		case "vector":
+			return Text.color(str, Colors.BabyBlue);
+
+		case "nil":
+			return Text.color(str, Colors.GreyGrey);
+
+		// TODO: table
+		// TODO: userdata
+		// TODO: function
+		// TODO: thread
+
+		default:
+			return Text.color(`[${str}]`, Colors.Grey);
+	}
+};
+
+const compareProps = <T>(a: T, b: T, props: readonly (keyof T)[]) => props.some((prop) => a[prop] !== b[prop]);
+
+const tokenProps = ["color", "font", "italics"] as const;
+
+export const mergeTokens = (tokens: Token[]): Token[] => {
+	let last: Token | undefined;
+	const merged: Token[] = [];
+
+	for (const token of tokens) {
+		if (!last) {
+			last = { ...token };
+			continue;
+		}
+
+		if (compareProps(last, token, tokenProps)) {
+			last.text += token.text;
+			continue;
+		}
+
+		merged.push({ ...last });
+		last = token;
+	}
+
+	if (last) merged.push(last);
+
+	return merged;
 };
