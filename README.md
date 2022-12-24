@@ -1,3 +1,3 @@
 
 # Synlog
-*A debug display for Synapse X*
+*A visual logger for Synapse V3*
