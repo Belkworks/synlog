@@ -67,26 +67,10 @@ const compareProps = <T>(a: T, b: T, props: readonly (keyof T)[]) => props.some(
 
 const tokenProps = ["color", "font", "italics"] as const;
 
-export const mergeTokens = (tokens: Token[]): Token[] => {
-	let last: Token | undefined;
-	const merged: Token[] = [];
-
-	for (const token of tokens) {
-		if (!last) {
-			last = { ...token };
-			continue;
-		}
-
-		if (compareProps(last, token, tokenProps)) {
-			last.text += token.text;
-			continue;
-		}
-
-		merged.push({ ...last });
-		last = token;
-	}
-
-	if (last) merged.push(last);
-
-	return merged;
-};
+export const mergeTokens = (tokens: Token[]) =>
+	tokens.reduce<Token[]>((acc, token) => {
+		const last = acc[acc.size() - 1];
+		if (!last || compareProps(last, token, tokenProps)) acc.push({ ...token });
+		else last.text += token.text;
+		return acc;
+	}, []);
