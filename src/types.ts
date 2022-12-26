@@ -2,7 +2,7 @@ import type { Line } from "class/line";
 
 export type Token = {
 	text: string;
-	color: Color3;
+	color?: Color3 | undefined;
 	font?: DrawFont | undefined;
 	italics?: boolean | undefined;
 	// TODO: size

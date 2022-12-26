@@ -36,7 +36,7 @@ export class TextBlock {
 
 		const token = this.token;
 		object.Font = token.font ?? (token.italics ? Fonts.Italic : Fonts.Regular);
-		object.Color = token.color;
+		object.Color = token.color ?? Colors.White;
 		object.Text = token.text;
 
 		this.height = object.TextBounds.Y;
