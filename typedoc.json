@@ -3,4 +3,5 @@
 		"src/index.ts",
 	],
 	"out": "docs",
+	"gitRevision": "master"
 }
