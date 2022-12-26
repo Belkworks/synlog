@@ -74,3 +74,14 @@ export const mergeTokens = (tokens: Token[]) =>
 		else last.text += token.text;
 		return acc;
 	}, []);
+
+export const tokenize = (...parts: unknown[]) =>
+	mergeTokens(
+		parts
+			.filterUndefined()
+			.map(colorify)
+			.map((t) => ({
+				...t,
+				text: t.text + " ",
+			})),
+	);

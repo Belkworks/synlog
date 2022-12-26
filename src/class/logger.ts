@@ -1,4 +1,4 @@
-import { colorify, mergeTokens } from "../helper";
+import { tokenize } from "../helper";
 import { LineEntry, LogDirection, MaxLogBehavior, Token } from "../types";
 import { Line } from "./line";
 
@@ -51,19 +51,9 @@ export class DrawingLogger {
 		return this.addLine(Line.fromTokens(tokens));
 	}
 
-	print(...tokens: unknown[]) {
+	print(...parts: unknown[]) {
 		// TODO: allow printing nil?
-		return this.printTokens(
-			mergeTokens(
-				tokens
-					.filterUndefined()
-					.map(colorify)
-					.map((t) => ({
-						...t,
-						text: t.text + " ",
-					})),
-			),
-		);
+		return this.printTokens(tokenize(parts));
 	}
 
 	private destroyEntry(entry: LineEntry) {
