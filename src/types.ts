@@ -1,3 +1,5 @@
+import type { Line } from "class/line";
+
 export type Token = {
 	text: string;
 	color: Color3;
@@ -6,4 +8,16 @@ export type Token = {
 	// TODO: size
 	// TODO: bold?
 	// TODO: underline?
+};
+
+export type LogDirection = "up" | "down";
+
+export type MaxLogBehavior = "drop" | "wait";
+
+export type LineEntry = {
+	id: string;
+	line: Line;
+	visible: boolean;
+	enteredAt: DateTime;
+	shownAt?: DateTime;
 };

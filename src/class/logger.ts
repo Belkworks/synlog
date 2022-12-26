@@ -1,32 +1,21 @@
 import { colorify, mergeTokens } from "../helper";
-import { Token } from "../types";
+import { LineEntry, LogDirection, MaxLogBehavior, Token } from "../types";
 import { Line } from "./line";
 
 const Workspace = game.GetService("Workspace");
 const Camera = Workspace.CurrentCamera as Camera;
 
-type LineEntry = {
-	id: string;
-	line: Line;
-	visible: boolean;
-	enteredAt: DateTime;
-	shownAt?: DateTime;
-};
-
-type Direction = "up" | "down";
-type MaxBehavior = "drop" | "wait";
-
 export class DrawingLogger {
 	private lines: LineEntry[] = [];
 	private queue: LineEntry[] = [];
-	private behavior: MaxBehavior = "wait";
+	private behavior: MaxLogBehavior = "wait";
 	private offset = new Vector2(8, 8);
 
-	direction: Direction = "up";
+	direction: LogDirection = "up";
 	maxLines = 10;
 	logTime = 10;
 
-	setMaxBehavior(behavior: MaxBehavior) {
+	setMaxBehavior(behavior: MaxLogBehavior) {
 		this.behavior = behavior;
 		this.update();
 		return this;
@@ -39,7 +28,7 @@ export class DrawingLogger {
 
 	private counter = 0;
 
-	getId() {
+	private getId() {
 		return `line_${this.counter++}`;
 	}
 
