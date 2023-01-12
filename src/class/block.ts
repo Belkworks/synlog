@@ -4,8 +4,12 @@ import { Token } from "../types";
 export interface IBlock {
 	create(): void;
 	update(): void;
-	move(vec: Vector2): void;
+	move(to: Vector2 | Point2D): void;
 	destroy(): void;
+}
+
+function toPoint(point: Vector2 | Point2D) {
+	return typeIs(point, "Vector2") ? new Point2D(point) : point;
 }
 
 // A block of drawn text
@@ -50,9 +54,9 @@ export class TextBlock implements IBlock {
 		this.width = object.TextBounds.X;
 	}
 
-	move(vec: Vector2) {
+	move(to: Vector2 | Point2D) {
 		if (!this.object) return;
-		this.object.Position = new Point2D(vec);
+		this.object.Position = toPoint(to);
 	}
 
 	destroy() {
