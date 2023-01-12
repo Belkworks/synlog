@@ -1,11 +1,18 @@
 import { Colors, Fonts } from "../helper";
 import { Token } from "../types";
 
+export interface IBlock {
+	create(): void;
+	update(): void;
+	move(vec: Vector2): void;
+	destroy(): void;
+}
+
 // A block of drawn text
-export class TextBlock {
+export class TextBlock implements IBlock {
 	height = 0;
 	width = 0;
-	object?: TextDynamic;
+	private object?: TextDynamic;
 
 	constructor(private readonly token: Token) {}
 
