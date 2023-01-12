@@ -5,22 +5,45 @@ import { Line } from "./line";
 const Workspace = game.GetService("Workspace");
 const Camera = Workspace.CurrentCamera as Camera;
 
+/**
+ * A vertical list of {@link Line}s.
+ */
 export class DrawingLogger {
 	private lines: LineEntry[] = [];
 	private queue: LineEntry[] = [];
 	private behavior: MaxLogBehavior = "wait";
 	private offset = new Vector2(8, 8);
 
+	/**
+	 * The direction to render logs in.
+	 */
 	direction: LogDirection = "up";
+
+	/**
+	 * The maximum number of lines to display at once.
+	 */
 	maxLines = 10;
+
+	/**
+	 * The amount of time that logs are displayed for (in seconds).
+	 */
 	logTime = 10;
 
+	/**
+	 * Set the behavior for when {@link maxLines} is reached.
+	 *
+	 * `"drop"` will push the oldest line out, while
+	 * `"wait"` will wait for space.
+	 */
 	setMaxBehavior(behavior: MaxLogBehavior) {
 		this.behavior = behavior;
 		this.update();
 		return this;
 	}
 
+	/**
+	 * Set the offset in pixels from the corner to display logs.
+	 */
 	setOffset(x: number, y = x) {
 		this.offset = new Vector2(x, y);
 		return this;
@@ -41,7 +64,10 @@ export class DrawingLogger {
 		};
 	}
 
-	// TODO: display options
+	/**
+	 * Add a {@link Line} to the queue.
+	 * @returns Displayed line id.
+	 */
 	addLine(line: Line) {
 		const entry = this.getEntry(line);
 		this.queue.push(entry);
@@ -54,8 +80,11 @@ export class DrawingLogger {
 		return this.addLine(Line.fromTokens(tokens));
 	}
 
-	print(...parts: unknown[]) {
-		return this.printTokens(tokenize(parts));
+	/**
+	 * Show arbitrary data as a colorized line.
+	 */
+	print(...args: unknown[]) {
+		return this.printTokens(tokenize(args));
 	}
 
 	private destroyEntry(entry: LineEntry) {
@@ -78,6 +107,10 @@ export class DrawingLogger {
 		return true;
 	}
 
+	/**
+	 * Dismiss a line by its id.
+	 * @returns `true` if found, `false` otherwise.
+	 */
 	dismiss(id: string) {
 		const i = this.queue.findIndex((entry) => entry.id === id);
 		if (i >= 0) {
@@ -93,6 +126,9 @@ export class DrawingLogger {
 		return false;
 	}
 
+	/**
+	 * Remove all lines, including those in the queue.
+	 */
 	clear() {
 		this.lines.forEach((entry) => this.destroyEntry(entry));
 		this.lines.clear();
@@ -148,6 +184,11 @@ export class DrawingLogger {
 		this.update();
 	}
 
+	/**
+	 * Stops the logger and removes all lines.
+	 *
+	 * Once called, {@link addLine} will do nothing.
+	 */
 	Destroy() {
 		this.addLine = () => "";
 		this.clear();

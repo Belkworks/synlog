@@ -1,20 +1,31 @@
 import { Token } from "../types";
 import { TextBlock } from "./block";
 
-// A horizontal list of TextBlocks
+/**
+ * A horizontal list of {@link TextBlock}s.
+ */
 export class Line {
 	height = 0;
 
 	constructor(readonly blocks: TextBlock[]) {}
 
+	/**
+	 * Construct a line from a single block.
+	 */
 	static fromBlock(block: TextBlock) {
 		return new Line([block]);
 	}
 
+	/**
+	 * Construct a line from multiple tokens.
+	 */
 	static fromTokens(tokens: Token[]) {
 		return new Line(tokens.map((token) => new TextBlock(token)));
 	}
 
+	/**
+	 * Construct a line from a single token.
+	 */
 	static fromToken(token: Token) {
 		return new Line([new TextBlock(token)]);
 	}
