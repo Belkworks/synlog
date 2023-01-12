@@ -6,7 +6,8 @@
   "scripts": {
     "build": "rbxtsc --type=model && cpx \"include/**\" out/include && cpx \"node_modules/**/*.lua\" out/include/node_modules -L && tape out -o init.lua",
     "clean": "rimraf out",
-    "prepack": "pnpm clean && rbxtsc"
+    "prepack": "pnpm clean && rbxtsc",
+	"document": "pnpm typedoc"
   },
   "files": [
     "out",
