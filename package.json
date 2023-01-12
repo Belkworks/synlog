@@ -1,13 +1,13 @@
 {
   "name": "@belkworks/synlog",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "main": "out/init.lua",
   "types": "out/index.d.ts",
   "scripts": {
     "build": "rbxtsc --type=model && cpx \"include/**\" out/include && cpx \"node_modules/**/*.lua\" out/include/node_modules -L && tape out -o init.lua",
     "clean": "rimraf out",
     "prepack": "pnpm clean && rbxtsc",
-	"document": "pnpm typedoc"
+    "document": "pnpm typedoc"
   },
   "files": [
     "out",
