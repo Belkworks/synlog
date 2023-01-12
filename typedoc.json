@@ -3,5 +3,6 @@
 		"src/index.ts",
 	],
 	"out": "docs",
-	"gitRevision": "master"
+	"gitRevision": "master",
+	"darkHighlightTheme": "github-dark"
 }
