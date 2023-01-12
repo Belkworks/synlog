@@ -6,31 +6,29 @@ export interface IBlock {
 	update(): void;
 	move(to: Vector2 | Point2D): void;
 	destroy(): void;
+	getBounds(): Vector2;
 }
 
 function toPoint(point: Vector2 | Point2D) {
 	return typeIs(point, "Vector2") ? new Point2D(point) : point;
 }
 
-// A block of drawn text
+/**
+ * A block of drawn text.
+ */
 export class TextBlock implements IBlock {
-	height = 0;
-	width = 0;
+	private bounds = new Vector2();
 	private object?: TextDynamic;
 
 	constructor(private readonly token: Token) {}
 
-	private createObject() {
-		let obj = this.object;
-		if (obj === undefined) {
-			obj = new TextDynamic();
-			this.object = obj;
-		}
-		return obj;
+	private getObject() {
+		const obj = this.object;
+		return obj ? obj : (this.object = new TextDynamic());
 	}
 
 	create() {
-		const text = this.createObject();
+		const text = this.getObject();
 		text.XAlignment = XAlignment.Right;
 		text.YAlignment = YAlignment.Bottom;
 		text.Size = 21;
@@ -50,8 +48,7 @@ export class TextBlock implements IBlock {
 		object.Color = token.color ?? Colors.White;
 		object.Text = token.text;
 
-		this.height = object.TextBounds.Y;
-		this.width = object.TextBounds.X;
+		this.bounds = object.TextBounds;
 	}
 
 	move(to: Vector2 | Point2D) {
@@ -62,5 +59,9 @@ export class TextBlock implements IBlock {
 	destroy() {
 		if (this.object) this.object.Visible = false;
 		this.object = undefined;
+	}
+
+	getBounds() {
+		return this.bounds;
 	}
 }

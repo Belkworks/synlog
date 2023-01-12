@@ -21,14 +21,14 @@ export class Line {
 
 	create() {
 		this.blocks.forEach((block) => block.create());
-		this.height = this.blocks.reduce((acc, block) => math.max(acc, block.height), 0);
+		this.height = this.blocks.map((b) => b.getBounds().Y).reduce((a, b) => math.max(a, b));
 	}
 
 	move(position: Vector2) {
 		if (!this.blocks) return;
 		this.blocks.forEach((block) => {
 			block.move(position);
-			position = position.add(new Vector2(block.width, 0));
+			position = position.add(new Vector2(block.getBounds().X, 0));
 		});
 	}
 
