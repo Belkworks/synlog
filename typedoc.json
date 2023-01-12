@@ -4,5 +4,6 @@
 	],
 	"out": "docs",
 	"gitRevision": "master",
-	"darkHighlightTheme": "github-dark"
+	"darkHighlightTheme": "github-dark",
+	"readme": "none"
 }
