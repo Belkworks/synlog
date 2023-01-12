@@ -1,4 +1,4 @@
-import { Token } from "./types";
+import type { Token } from "./types";
 
 export const Colors = {
 	Red: new Color3(1, 0, 0),

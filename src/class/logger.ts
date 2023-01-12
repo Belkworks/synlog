@@ -32,19 +32,22 @@ export class DrawingLogger {
 		return `line_${this.counter++}`;
 	}
 
-	// TODO: display options
-	addLine(line: Line) {
-		const id = this.getId();
-
-		this.queue.push({
-			id,
-			line,
+	private getEntry(line: Line) {
+		return {
+			id: this.getId(),
 			enteredAt: DateTime.now(),
 			visible: false,
-		});
+			line,
+		};
+	}
+
+	// TODO: display options
+	addLine(line: Line) {
+		const entry = this.getEntry(line);
+		this.queue.push(entry);
 
 		this.update();
-		return id;
+		return entry.id;
 	}
 
 	printTokens(tokens: Token[]) {
@@ -52,7 +55,6 @@ export class DrawingLogger {
 	}
 
 	print(...parts: unknown[]) {
-		// TODO: allow printing nil?
 		return this.printTokens(tokenize(parts));
 	}
 
